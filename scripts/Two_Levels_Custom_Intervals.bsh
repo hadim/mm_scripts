@@ -1,0 +1,39 @@
+import org.micromanager.acquisition.SequenceSettings;
+import java.util.ArrayList;
+
+// This script create a custom time intervals list in the MDA
+// The intervals are set according to two tim interval level which are going to interveal.
+// You can check the intervals in the MDA after running this script.
+
+// Parameters
+totalTime = 10;  // min
+timeIntervalLevel1 = 10000;  // ms
+nFramesLevel2 = 30;
+timeIntervalLevel2 = 30;  // ms
+
+// Get MM MDA settings
+acq = mm.getAcquisitionManager();
+settings = acq.getAcquisitionSettings();
+
+// Enable custom intervals
+settings.useCustomIntervals = true;
+
+// Compute total number of frames for level 1
+nFramesLevel1 = (int) Math.round((totalTime * 60.0) / (timeIntervalLevel1 / 1000.0));
+print("Total number of frames is : " + nFramesLevel1);
+
+// Create the intervals
+intervals = new ArrayList();
+for(int i=0; i < nFramesLevel1; i++){
+	for(int j=0; j < nFramesLevel2; j++){
+		intervals.add((double) timeIntervalLevel2);
+	}
+	intervals.add((double) timeIntervalLevel1);
+}
+settings.customIntervalsMs = intervals;
+
+// Set the total number of frames
+settings.numFrames = intervals.length;
+
+// Load the settings to MDA
+acq.setAcquisitionSettings(settings);
