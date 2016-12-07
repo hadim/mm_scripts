@@ -8,7 +8,7 @@ import java.util.ArrayList;
 // Parameters
 totalTime = 10;  // min
 timeIntervalLevel1 = 10000;  // ms
-nFramesLevel2 = 30;
+nFramesLevel2 = 10;
 timeIntervalLevel2 = 30;  // ms
 
 // Get MM MDA settings
@@ -20,20 +20,22 @@ settings.useCustomIntervals = true;
 
 // Compute total number of frames for level 1
 nFramesLevel1 = (int) Math.round((totalTime * 60.0) / (timeIntervalLevel1 / 1000.0));
-print("Total number of frames is : " + nFramesLevel1);
 
 // Create the intervals
 intervals = new ArrayList();
-for(int i=0; i < nFramesLevel1; i++){
-	for(int j=0; j < nFramesLevel2; j++){
+for(int i=0; i < nFramesLevel1 - 1; i++){
+	for(int j=0; j < nFramesLevel2 - 1; j++){
 		intervals.add((double) timeIntervalLevel2);
 	}
 	intervals.add((double) timeIntervalLevel1);
 }
 settings.customIntervalsMs = intervals;
 
-// Set the total number of frames
-settings.numFrames = intervals.length;
-
 // Load the settings to MDA
 acq.setAcquisitionSettings(settings);
+
+print("Total number of frames for level 1 is : " + nFramesLevel1);
+print("Total number of frames for level 2 is : " + nFramesLevel2);
+print("Total number of frames is : " + intervals.size());
+
+mm.app().refreshGUI();
