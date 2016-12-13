@@ -8,7 +8,7 @@ import java.util.ArrayList;
 // Parameters
 totalTime = 10;  // min
 timeIntervalLevel1 = 10000;  // ms
-nFramesLevel2 = 10;
+nFramesLevel2 = 30;
 timeIntervalLevel2 = 30;  // ms
 
 // Get MM MDA settings
