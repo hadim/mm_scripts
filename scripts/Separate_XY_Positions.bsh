@@ -1,0 +1,31 @@
+import java.io.File;
+
+datastore = mm.displays().getCurrentWindow().getDatastore();
+
+max_coords = datastore.getMaxIndices();
+
+for(int i=0; i <= max_coords.getStagePosition(); i++){
+	prefix = new File(datastore.getSavePath()).getName() + "_XYPosition_" + i;
+	data_path = new File(datastore.getSavePath(), prefix).toString();
+	datastore_pos = mm.data().createMultipageTIFFDatastore(data_path, true, false);
+
+	print("Processing " + data_path);
+	
+	intended_dimensions = datastore.getMaxIndices().copy().stagePosition(0).build();
+	new_metadata = datastore.getSummaryMetadata().copy().intendedDimensions(intended_dimensions).build();
+	new_metadata = new_metadata.copy().prefix(prefix).build();
+	
+	datastore_pos.setSummaryMetadata(new_metadata);
+	
+	coords = (new Builder()).stagePosition(i).build();
+	for(image: datastore.getImagesMatching(coords)){
+		new_coords = image.getCoords().copy().stagePosition(0).build();
+		datastore_pos.putImage(image.copyAtCoords(new_coords));
+	}
+	
+	datastore_pos.freeze();
+	datastore_pos.close();
+}
+
+print("Done");
+
