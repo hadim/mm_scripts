@@ -46,6 +46,6 @@ make install
 cd ../
 
 # Generate zip bundle
-mkdir -p bundles/
+mkdir -p "bundles/"
 BUNDLE_NAME="$(date +"%Y.%m.%d.%H.%M").MicroManager-$GIT_HASH.zip"
-zip -r bundles/$BUNDLE_NAME Fiji.app/
+zip -r "bundles/$BUNDLE_NAME" "Fiji.app/"
