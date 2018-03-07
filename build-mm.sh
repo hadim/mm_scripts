@@ -78,8 +78,7 @@ make install
 cp "$MM_DIR/bindist/any-platform/MMConfig_demo.cfg" "$IJ_DIR"
 
 # Copy boost libraries to ImageJ folder
-mkdir -p "$IJ_DIR/jars/linux64/"
-cp "$BOOST_DIR/lib/*" "$IJ_DIR/jars/linux64/"
+cp -R "$BOOST_DIR/lib/." "$IJ_DIR"
 
 cd ../
 
