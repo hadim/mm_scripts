@@ -29,7 +29,7 @@ fi
 
 mkdir -p "$THIRDPARTY_DIR/classext"
 if [ ! -f "$THIRDPARTY_DIR/classext/iconloader.jar" ]; then
-    wget -P "$3RDPARTY_DIR/classext" "https://valelab4.ucsf.edu/svn/3rdpartypublic/classext/iconloader.jar"
+    wget -P "$THIRDPARTY_DIR/classext" "https://valelab4.ucsf.edu/svn/3rdpartypublic/classext/iconloader.jar"
 fi
 
 if [ ! -f "$THIRDPARTY_DIR/classext/TSFProto.jar" ]; then
