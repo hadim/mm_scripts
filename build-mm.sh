@@ -86,4 +86,4 @@ cd ../
 
 mkdir -p "bundles/"
 BUNDLE_NAME="$(date +"%Y.%m.%d.%H.%M").MicroManager-$GIT_HASH.zip"
-zip -r "bundles/$BUNDLE_NAME" "$IJ_DIR"
+zip -r "bundles/$BUNDLE_NAME" "Fiji.app"
