@@ -25,6 +25,8 @@ if [ ! -d "$IJ_DIR" ]; then
     unzip "fiji-linux64.zip"
 fi
 
+IJ_JAR=`ls -1 "${IJ_DIR}"/jars/ij-1.5*.jar`
+
 # Install dependencies (ideally everything would be managed by Maven...)
 
 mkdir -p "$THIRDPARTY_DIR/classext"
@@ -65,12 +67,12 @@ GIT_HASH=$(git rev-parse --short HEAD)
 
 ./autogen.sh
 ./configure --enable-imagej-plugin="$IJ_DIR" \
-            --with-ij-jar="$IJ_DIR/jars/ij-1.51v-SNAPSHOT.jar" \
+            --with-ij-jar="$IJ_JAR" \
             --with-boost="$BOOST_DIR" \
             LDFLAGS=-L"$BOOST_DIR/lib"
 
 make fetchdeps
-make
+make --jobs=`nproc --all`
 
 # Install Micro-Manager
 
@@ -78,7 +80,7 @@ make install
 cp "$MM_DIR/bindist/any-platform/MMConfig_demo.cfg" "$IJ_DIR"
 
 # Copy boost libraries to ImageJ folder
-cp -R "$BOOST_DIR/lib/." "$IJ_DIR"
+cp --no-dereference --recursive "${BOOST_DIR}"/lib/. "${IJ_DIR}/"
 
 cd ../
 
@@ -86,4 +88,4 @@ cd ../
 
 mkdir -p "bundles/"
 BUNDLE_NAME="$(date +"%Y.%m.%d.%H.%M").MicroManager-$GIT_HASH.zip"
-zip -r "bundles/$BUNDLE_NAME" "Fiji.app"
+zip --symlinks --recurse-paths "bundles/$BUNDLE_NAME" "Fiji.app"
