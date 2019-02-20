@@ -20,8 +20,7 @@ if [ ! -f "fiji-linux64.zip" ]; then
     wget "https://downloads.imagej.net/fiji/latest/fiji-linux64.zip"
 fi
 
-rm -fr "$IJ_DIR"
-if [ ! -d "$IJ_DIR" ]; then
+if [ ! -e "$IJ_DIR" ]; then
     unzip "fiji-linux64.zip"
 fi
 
@@ -45,7 +44,7 @@ fi
 # Boost shipped by Ubuntu is now to recent and does not work well with Micro-manager.
 # So we install an older version (1.57).
 
-if [ ! -d "$BOOST_DIR" ]; then
+if [ ! -e "$BOOST_DIR" ]; then
 	mkdir -p "$BOOST_DIR"
 	cd "$BOOST_DIR"
     wget "https://anaconda.org/anaconda/boost/1.57.0/download/linux-64/boost-1.57.0-4.tar.bz2"
@@ -56,12 +55,18 @@ fi
 
 # Clone the git repository
 
-if [ ! -d "$MM_DIR" ]; then
+if [ ! -e "$MM_DIR" ]; then
   git clone https://github.com/micro-manager/micro-manager.git
 fi
 
 cd "$MM_DIR"
-GIT_HASH=$(git rev-parse --short HEAD)
+if [ -d ".git" ]; then
+  VERSION_ID=$(git rev-parse --short HEAD)
+else if [ -d ".svn" ]; then
+  VERSION_ID="svn-"$(svn info --show-item=revision .)
+fi else
+  VERSION_ID=$(date +%F)
+fi
 
 # Launch the build process (it can take a while)
 
@@ -87,5 +92,5 @@ cd ../
 # Generate zip bundle for distribution and backup
 
 mkdir -p "bundles/"
-BUNDLE_NAME="$(date +"%Y.%m.%d.%H.%M").MicroManager-$GIT_HASH.zip"
+BUNDLE_NAME="$(date +"%Y.%m.%d.%H.%M").MicroManager-${VERSION_ID}.zip"
 zip --symlinks --recurse-paths "bundles/$BUNDLE_NAME" "Fiji.app"
