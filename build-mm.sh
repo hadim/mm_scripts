@@ -76,7 +76,6 @@ fi
             --with-boost="$BOOST_DIR" \
             LDFLAGS=-L"$BOOST_DIR/lib"
 
-make fetchdeps
 make --jobs=`nproc --all`
 
 # Install Micro-Manager
