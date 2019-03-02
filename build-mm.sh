@@ -62,9 +62,9 @@ fi
 cd "$MM_DIR"
 if [ -d ".git" ]; then
   VERSION_ID=$(git rev-parse --short HEAD)
-else if [ -d ".svn" ]; then
+elif [ -d ".svn" ]; then
   VERSION_ID="svn-"$(svn info --show-item=revision .)
-fi else
+else
   VERSION_ID=$(date +%F)
 fi
 
